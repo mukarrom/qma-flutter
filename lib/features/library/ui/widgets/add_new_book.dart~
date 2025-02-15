@@ -1,0 +1,123 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:qms/app/app_colors.dart';
+import 'package:qms/features/library/controllers/library_controller.dart';
+import 'package:qms/features/library/data/models/book_model.dart';
+import 'package:qms/features/students/ui/widgets/single_input_field_with_icon.dart';
+
+void onClickAddNewBook(BuildContext context, StateSetter setState,
+    {int? index}) {
+  final LibraryController libraryController = Get.find<LibraryController>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TextEditingController bookNameController = TextEditingController();
+  final TextEditingController bookPriceController = TextEditingController();
+  BookModel? product = index != null ? libraryController.products[index] : null;
+  if (product != null) {
+    bookNameController.text = product.productName;
+    bookPriceController.text = product.price.toString();
+  }
+
+  void onClickSave() {
+    if (formKey.currentState!.validate()) {
+      libraryController.addProduct(
+        BookModel(
+          productName: bookNameController.text,
+          price: double.parse(
+            bookPriceController.text,
+          ),
+          inStock: 0,
+          totalSold: 0,
+          totalBought: 0,
+        ),
+      );
+      setState(() {});
+      Navigator.pop(context);
+    }
+  }
+
+  void onClickUpdate() {
+    if (formKey.currentState!.validate()) {
+      product?.productName = bookNameController.text;
+      product?.price = double.parse(bookPriceController.text);
+      setState(() {});
+      Navigator.pop(context);
+    }
+  }
+
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: Center(
+            child: Text(
+          index != null
+              ? "প্রোডাক্ট আপডেট করুন"
+              : "নতুন প্রোডাক্ট যুক্ত করুন",
+        )),
+        titleTextStyle: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.w500,
+          color: AppColors.themeColor,
+          fontFamily: 'Ador',
+        ),
+        content: Padding(
+          padding: EdgeInsets.all(8),
+          child: Form(
+            key: formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                SingleInputFieldWithIcon(
+                  icon: Icons.menu_book_outlined,
+                  hint: "প্রোডাক্টের নাম",
+                  required: true,
+                  controller: bookNameController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "প্রোডাক্টের নাম প্রয়োজন";
+                    }
+                    return null;
+                  },
+                ),
+                SingleInputFieldWithIcon(
+                  icon: Icons.attach_money_outlined,
+                  hint: "মূল্য",
+                  required: true,
+                  controller: bookPriceController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "প্রোডাক্টের মূল্য প্রয়োজন";
+                    }
+                    return null;
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              "বাতিল",
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+          Visibility(
+            visible: index == null,
+            replacement: TextButton(
+              onPressed: onClickUpdate,
+              child: Text("আপডেট করুন"),
+            ),
+            child: TextButton(
+              onPressed: onClickSave,
+              child: Text("সেভ করুন"),
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}
