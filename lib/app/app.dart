@@ -4,8 +4,8 @@ import 'package:qma/app/app_theme_data.dart';
 import 'package:qma/app/controller_binder.dart';
 import 'package:qma/features/common/ui/screens/main_layout.dart';
 
-class qmaApp extends StatelessWidget {
-  const qmaApp({super.key});
+class QmaApp extends StatelessWidget {
+  const QmaApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +14,21 @@ class qmaApp extends StatelessWidget {
       initialBinding: ControllerBinder(),
       home: const MainLayout(),
       theme: AppThemeData.lightThemeData,
+    );
+  }
+}
+
+class QmaWindowsApp extends StatelessWidget {
+  const QmaWindowsApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      home: Scaffold(
+        body: Center(
+          child: Text("Windows"),
+        ),
+      ),
     );
   }
 }
