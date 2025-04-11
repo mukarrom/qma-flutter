@@ -18,7 +18,7 @@ class MainLayout extends StatefulWidget {
 class _MainLayoutState extends State<MainLayout> {
   @override
   void initState() {
-    Get.find<CategoryListController>().getCategories();
+    Get.find<CategoryListController>().getAllCategories();
     Get.find<DeletedCategoryListController>().getDeletedCategories();
     Get.find<ProductListController>().getProducts();
     super.initState();

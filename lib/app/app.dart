@@ -17,18 +17,3 @@ class QmaApp extends StatelessWidget {
     );
   }
 }
-
-class QmaWindowsApp extends StatelessWidget {
-  const QmaWindowsApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return GetMaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text("Windows"),
-        ),
-      ),
-    );
-  }
-}
